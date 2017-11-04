@@ -1,6 +1,7 @@
 var CONFIRM_TEXT = '确定';
 var CANCEL_TEXT = '取消';
 
+浮点数
 var defaults = {
   title: '提示',
   message: '',

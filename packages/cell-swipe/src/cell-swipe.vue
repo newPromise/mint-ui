@@ -116,23 +116,24 @@ export default {
   },
 
   methods: {
+   // 重置 swipe 状态
     resetSwipeStatus() {
       this.swiping = false;
       this.opened = true;
       this.offsetLeft = 0;
     },
-
+    // 定义移动动作
     translate3d(offset) {
       return `translate3d(${offset}px, 0, 0)`;
     },
-
+    // 进行移动
     swipeMove(offset = 0) {
       this.wrap.style.webkitTransform = this.translate3d(offset);
       this.rightWrapElm.style.webkitTransform = this.translate3d(this.rightWidth + offset);
       this.leftWrapElm.style.webkitTransform = this.translate3d(-this.leftWidth + offset);
       offset && (this.swiping = true);
     },
-
+    // 当手指移开的时候的动作
     swipeLeaveTransition(direction) {
       setTimeout(() => {
         this.swipeLeave = true;
@@ -159,14 +160,14 @@ export default {
         });
       }, 0);
     },
-
+    // 手指开始触摸
     startDrag(evt) {
       evt = evt.changedTouches ? evt.changedTouches[0] : evt;
       this.dragging = true;
       this.start.x = evt.pageX;
       this.start.y = evt.pageY;
     },
-
+    // 手指正在移动的时候
     onDrag(evt) {
       if (this.opened) {
         !this.swiping && this.swipeMove(0);
@@ -195,7 +196,7 @@ export default {
 
       this.swipeMove(offsetLeft);
     },
-
+    // 当移动的手指移开的时候定义动作
     endDrag() {
       if (!this.swiping) return;
       this.swipeLeaveTransition(this.offsetLeft > 0 ? -1 : 1);

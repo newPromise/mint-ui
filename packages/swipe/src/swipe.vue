@@ -47,6 +47,7 @@
 </style>
 
 <template>
+<!-- mint-swipe 定义轮播组件的使用 -->
   <div class="mint-swipe">
     <div class="mint-swipe-items-wrap" ref="wrap">
       <slot></slot>
@@ -128,6 +129,7 @@
     },
 
     watch: {
+      // this.$emit 触发 change 事件
       index(newIndex) {
         this.$emit('change', newIndex);
       }
@@ -180,22 +182,26 @@
           element.style.webkitTransform = `translate3d(${offset}px, 0, 0)`;
         }
       },
-
+      // reInitPages 用来进行重置页面的
       reInitPages() {
         var children = this.$children;
         this.noDrag = children.length === 1 && this.noDragWhenSingle;
-
+        // this.noDrag 当 children.length === 1 并且 this.noDragWhenSingle 的时候 this.noDrag = false;
+        // this.noDrag = children.length === 1 && this.noDragWhenSingle;
         var pages = [];
         var intDefaultIndex = Math.floor(this.defaultIndex);
         var defaultIndex = (intDefaultIndex >= 0 && intDefaultIndex < children.length) ? intDefaultIndex : 0;
         this.index = defaultIndex;
-
+        // 对于children.forEach 进行 forEach 工作
         children.forEach(function(child, index) {
           pages.push(child.$el);
-
+          // 将各个 children 的 child.$el 压入到 pages 中
           removeClass(child.$el, 'is-active');
-
+          // 先要移除所有的子元素的 `isActive` 
+          // defaultIndex 是默认的 被切换到的 index
           if (index === defaultIndex) {
+            // 如果 index === defaultIndex 
+            // addClass 状态
             addClass(child.$el, 'is-active');
           }
         });
@@ -462,13 +468,18 @@
 
         this.dragState = {};
       },
-
+      // initTimer()
       initTimer() {
+        // 如果 this.auto > 0 && !this.timer
         if (this.auto > 0 && !this.timer) {
+          // 时间间隔 this.auto 之后执行函数
           this.timer = setInterval(() => {
             if (!this.continuous && (this.index >= this.pages.length - 1)) {
               return this.clearTimer();
             }
+            // this.dragging 表示触摸操作
+            // this.animating 表示动画操作
+            // 当非触摸并且非动画的时候 执行 this.next() 操作
             if (!this.dragging && !this.animating) {
               this.next();
             }
@@ -501,6 +512,7 @@
 
       var element = this.$el;
 
+      // touchstart 事件
       element.addEventListener('touchstart', (event) => {
         if (this.prevent) event.preventDefault();
         if (this.stopPropagation) event.stopPropagation();
@@ -509,13 +521,13 @@
         this.userScrolling = false;
         this.doOnTouchStart(event);
       });
-
+      // touchmove 事件
       element.addEventListener('touchmove', (event) => {
         if (!this.dragging) return;
         if (this.timer) this.clearTimer();
         this.doOnTouchMove(event);
       });
-
+      // touchend 事件
       element.addEventListener('touchend', (event) => {
         if (this.userScrolling) {
           this.dragging = false;
@@ -525,6 +537,7 @@
         if (!this.dragging) return;
         this.initTimer();
         this.doOnTouchEnd(event);
+        // touchend 事件的时候 this.dragging = false;
         this.dragging = false;
       });
     }

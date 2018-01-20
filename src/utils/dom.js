@@ -3,8 +3,10 @@
 import Vue from 'vue';
 
 const isServer = Vue.prototype.$isServer;
+// 获取到特殊字符的正则表达式
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
 const MOZ_HACK_REGEXP = /^moz([A-Z])/;
+// 对于使用 ieVerson 版本的判断使用
 const ieVersion = isServer ? 0 : Number(document.documentMode);
 
 /* istanbul ignore next */
@@ -19,6 +21,8 @@ const camelCase = function(name) {
 };
 
 /* istanbul ignore next */
+// 通过使用 addEventListener 或者通过使用 attachEvent 进行添加
+// addEventListener
 export const on = (function() {
   if (!isServer && document.addEventListener) {
     return function(element, event, handler) {
@@ -34,7 +38,6 @@ export const on = (function() {
     };
   }
 })();
-
 /* istanbul ignore next */
 export const off = (function() {
   if (!isServer && document.removeEventListener) {
@@ -53,6 +56,7 @@ export const off = (function() {
 })();
 
 /* istanbul ignore next */
+// once 函数的作用, 监听函数之后移除函数
 export const once = function(el, event, fn) {
   var listener = function() {
     if (fn) {
@@ -64,9 +68,11 @@ export const once = function(el, event, fn) {
 };
 
 /* istanbul ignore next */
+// 判断是否含有class 的值
 export function hasClass(el, cls) {
   if (!el || !cls) return false;
   if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
+  // 对于classList 存在的情况先使用 classList 进行判断
   if (el.classList) {
     return el.classList.contains(cls);
   } else {

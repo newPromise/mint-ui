@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+<div id="demo" class="age">
+
+</div>
+<script>
+	window.onload = function () {
+		const trim = function (string) {
+			// 使用 \uFEFF 表示字节次序标记
+			// 使用 \uFEFF 的目的在于去除字符空格
+			// 使用空白字符包括使用 UFEFF
+			return (string || '').replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g, '');
+		}
+		// 关于使用 \uFEFF 是 ES5 新增的空白符被称作 字节次序标记字符
+		console.log("被trim的字符串",trim("          ds   fds"));
+
+		// 对于使用 camlCase 的函数
+		// 匹配 : - _ 等特殊字符， 匹配之后将特殊字符之后的字母变成
+		// 对于使用正则表达式中 replace 的用法
+		const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+    const MOZ_HACK_REGEXP = /^moz([A-Z])/;
+		const camelCase = function(name) {
+			return name.replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+				return offset ? letter.toUpperCase() : letter;
+			}).replace(MOZ_HACK_REGEXP, 'Moz$1');
+		};
+		console.log("camelCase", camelCase("zhan-gn_ing:nign"));
+		document.getElementById("demo").className = "demo";
+		console.log("得到的class", document.getElementById("demo").classList);
+		function hasClass(element, cls) {
+			return (" " + element.className + " ").indexOf(" " + cls + " ") > -1;
+		}
+		console.log("是否含有函数", hasClass(document.getElementById("demo"), "demo"));
+
+	};
+</script>
+</body>
+</html>

@@ -61,6 +61,7 @@
 </template>
 
 <script>
+  // once 是从 mint-ui/src/utils/dom 中获得到的
   import { once } from 'mint-ui/src/utils/dom';
   import { addClass, removeClass } from 'mint-ui/src/utils/dom';
 
